@@ -54,6 +54,8 @@ func (c ClientCookies) GetStates(r *http.Request) map[string]string {
 		}
 		name := strings.TrimPrefix(cookie.Name, stateCookiePrefix)
 		rv[name] = cookie.Value
+		fmt.Println(cookie.Name)
+		fmt.Println(cookie.Value)
 	}
 	return rv
 }
