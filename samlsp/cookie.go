@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
+	"fmt"
 	"github.com/braineet/saml"
 )
 
