@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/xml"
 	"net/http"
+	"fmt"
 	"time"
 
 	"github.com/braineet/saml"
@@ -183,7 +184,9 @@ func (m *Middleware) getPossibleRequestIDs(r *http.Request) []string {
 	// If IDP initiated requests are allowed, then we can expect an empty response ID.
 	if m.AllowIDPInitiated {
 		rv = append(rv, "")
+		fmt.Println("Inside")
 	}
+	fmt.Println(rv)
 
 	return rv
 }
