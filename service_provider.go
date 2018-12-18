@@ -408,7 +408,6 @@ func (sp *ServiceProvider) ParseResponse(req *http.Request, possibleRequestIDs [
 		return nil, retErr
 	}
 
-	fmt.Println(possibleRequestIDs)
 	requestIDvalid := false
 	for _, possibleRequestID := range possibleRequestIDs {
 		if resp.InResponseTo == possibleRequestID {
