@@ -688,6 +688,11 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	roots, err := certificateStore.Certificates()
 	fmt.Println(roots)
 
+	for _, root := range roots {
+		fmt.Println(root.Raw)
+		fmt.Println(string(root.Raw))
+	}
+
 	_, err = validationContext.Validate(el)
 	return err
 }
