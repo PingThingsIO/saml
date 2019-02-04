@@ -39,9 +39,9 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/russellhaering/goxmldsig"
+  name = "github.com/braineet/goxmldsig"
   packages = [".","etreeutils","types"]
-  revision = "b7efc6231e45b10bfd779852831c8bb59b350ec5"
+  revision = "92a4e91059a96992cb46191e65fb0933f253bef5"
 
 [[projects]]
   name = "github.com/zenazn/goji"

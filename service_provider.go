@@ -18,8 +18,8 @@ import (
 	"github.com/beevik/etree"
 	"github.com/braineet/saml/logger"
 	"github.com/braineet/saml/xmlenc"
-	dsig "github.com/russellhaering/goxmldsig"
-	"github.com/russellhaering/goxmldsig/etreeutils"
+	dsig "github.com/braineet/goxmldsig"
+	"github.com/braineet/goxmldsig/etreeutils"
 )
 
 // NameIDFormat is the format of the id
@@ -690,7 +690,6 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 
 	for _, root := range roots {
 		fmt.Println(root.Raw)
-		fmt.Println(string(root.Raw))
 	}
 
 	_, err = validationContext.Validate(el)

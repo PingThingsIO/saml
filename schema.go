@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/beevik/etree"
-	"github.com/russellhaering/goxmldsig/etreeutils"
+	"github.com/braineet/goxmldsig/etreeutils"
 )
 
 // AuthnRequest represents the SAML object of the same name, a request from a service provider
