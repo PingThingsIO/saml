@@ -602,9 +602,11 @@ func (sp *ServiceProvider) validateSigned(responseEl *etree.Element) error {
 		return err
 	}
 	if sigEl != nil {
+		fmt.Println("in first signature")
 		if err = sp.validateSignature(responseEl); err != nil {
 			return fmt.Errorf("cannot validate signature on Response: %v", err)
 		}
+		fmt.Println("has first signature")
 		haveSignature = true
 	}
 
@@ -613,14 +615,17 @@ func (sp *ServiceProvider) validateSigned(responseEl *etree.Element) error {
 		return err
 	}
 	if assertionEl != nil {
+		fmt.Println("in second assertation")
 		sigEl, err := findChild(assertionEl, "http://www.w3.org/2000/09/xmldsig#", "Signature")
 		if err != nil {
 			return err
 		}
 		if sigEl != nil {
+			fmt.Println("in second signature")
 			if err = sp.validateSignature(assertionEl); err != nil {
 				return fmt.Errorf("cannot validate signature on Response: %v", err)
 			}
+			fmt.Println("has second signature")
 			haveSignature = true
 		}
 	}
@@ -637,6 +642,8 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("after idp")
 
 	certificateStore := dsig.MemoryX509CertificateStore{
 		Roots: []*x509.Certificate{cert},
@@ -657,13 +664,7 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	//
 	// The best course of action is to just remove the KeyInfo so that dsig falls back to
 	// verifying against the public key provided in the metadata.
-	if el.FindElement("./Signature/KeyInfo/X509Data/X509Certificate") == nil {
-		if sigEl := el.FindElement("./Signature"); sigEl != nil {
-			if keyInfo := sigEl.FindElement("KeyInfo"); keyInfo != nil {
-				sigEl.RemoveChild(keyInfo)
-			}
-		}
-	}
+	
 
 	ctx, err := etreeutils.NSBuildParentContext(el)
 	if err != nil {
