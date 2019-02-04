@@ -664,7 +664,13 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	//
 	// The best course of action is to just remove the KeyInfo so that dsig falls back to
 	// verifying against the public key provided in the metadata.
-	
+	if el.FindElement("./Signature/KeyInfo/X509Data/X509Certificate") == nil {
+		if sigEl := el.FindElement("./Signature"); sigEl != nil {
+			if keyInfo := sigEl.FindElement("KeyInfo"); keyInfo != nil {
+				sigEl.RemoveChild(keyInfo)
+			}
+		}
+	}
 
 	ctx, err := etreeutils.NSBuildParentContext(el)
 	if err != nil {
@@ -678,6 +684,9 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(el.Text())
+	roots, err := certificateStore.Certificates()
+	fmt.Println(roots)
 
 	_, err = validationContext.Validate(el)
 	return err
