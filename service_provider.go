@@ -602,11 +602,9 @@ func (sp *ServiceProvider) validateSigned(responseEl *etree.Element) error {
 		return err
 	}
 	if sigEl != nil {
-		fmt.Println("in first signature")
 		if err = sp.validateSignature(responseEl); err != nil {
 			return fmt.Errorf("cannot validate signature on Response: %v", err)
 		}
-		fmt.Println("has first signature")
 		haveSignature = true
 	}
 
@@ -615,17 +613,14 @@ func (sp *ServiceProvider) validateSigned(responseEl *etree.Element) error {
 		return err
 	}
 	if assertionEl != nil {
-		fmt.Println("in second assertation")
 		sigEl, err := findChild(assertionEl, "http://www.w3.org/2000/09/xmldsig#", "Signature")
 		if err != nil {
 			return err
 		}
 		if sigEl != nil {
-			fmt.Println("in second signature")
 			if err = sp.validateSignature(assertionEl); err != nil {
 				return fmt.Errorf("cannot validate signature on Response: %v", err)
 			}
-			fmt.Println("has second signature")
 			haveSignature = true
 		}
 	}
@@ -642,10 +637,6 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("after idp")
-
-	fmt.Println(cert)
 
 	certificateStore := dsig.MemoryX509CertificateStore{
 		Roots: []*x509.Certificate{cert},
@@ -685,13 +676,6 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	el, err = etreeutils.NSDetatch(ctx, el)
 	if err != nil {
 		return err
-	}
-	fmt.Println(el.Text())
-	roots, err := certificateStore.Certificates()
-	fmt.Println(roots)
-
-	for _, root := range roots {
-		fmt.Println(root.Raw)
 	}
 
 	_, err = validationContext.Validate(el)
