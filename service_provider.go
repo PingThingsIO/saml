@@ -115,6 +115,7 @@ func (sp *ServiceProvider) Metadata() *EntityDescriptor {
 	for _, intermediate := range sp.Intermediates {
 		certBytes = append(certBytes, intermediate.Raw...)
 	}
+	fmt.Println(bytes(base64.StdEncoding.EncodeToString(certBytes)))
 	return &EntityDescriptor{
 		EntityID:   sp.MetadataURL.String(),
 		ValidUntil: validUntil,
