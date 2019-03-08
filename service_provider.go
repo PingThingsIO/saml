@@ -694,7 +694,7 @@ func (sp *ServiceProvider) validateSignature(el *etree.Element) error {
 	for _, root := range roots {
 		fmt.Println(root.Raw)
 	}
-
+	fmt.Println(el.Text())
 	_, err = validationContext.Validate(el)
 	return err
 }
