@@ -22,7 +22,7 @@ import (
 	"github.com/beevik/etree"
 	"github.com/braineet/saml/logger"
 	"github.com/braineet/saml/xmlenc"
-	dsig "github.com/braineet/goxmldsig"
+	dsig "github.com/russellhaering/goxmldsig"
 )
 
 // Session represents a user session. It is returned by the

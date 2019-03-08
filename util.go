@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"time"
 
-	dsig "github.com/braineet/goxmldsig"
+	dsig "github.com/russellhaering/goxmldsig"
 )
 
 // TimeNow is a function that returns the current time. The default

@@ -39,7 +39,7 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/braineet/goxmldsig"
+  name = "github.com/russellhaering/goxmldsig"
   packages = [".","etreeutils","types"]
   revision = "92a4e91059a96992cb46191e65fb0933f253bef5"
 

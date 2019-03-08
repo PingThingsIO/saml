@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	dsig "github.com/braineet/goxmldsig"
+	dsig "github.com/russellhaering/goxmldsig"
 	. "gopkg.in/check.v1"
 
 	"github.com/braineet/saml"
