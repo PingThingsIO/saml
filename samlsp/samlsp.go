@@ -12,8 +12,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/crewjam/saml"
-	"github.com/crewjam/saml/logger"
+	"github.com/braineet/saml"
+	"github.com/braineet/saml/logger"
 )
 
 const defaultTokenMaxAge = time.Hour
@@ -24,6 +24,7 @@ type Options struct {
 	Key               *rsa.PrivateKey
 	Logger            logger.Interface
 	Certificate       *x509.Certificate
+	Intermediates     []*x509.Certificate
 	AllowIDPInitiated bool
 	IDPMetadata       *saml.EntityDescriptor
 	IDPMetadataURL    *url.URL
@@ -56,6 +57,7 @@ func New(opts Options) (*Middleware, error) {
 			Key:         opts.Key,
 			Logger:      logr,
 			Certificate: opts.Certificate,
+			Intermediates: opts.Intermediates,
 			MetadataURL: metadataURL,
 			AcsURL:      acsURL,
 			IDPMetadata: opts.IDPMetadata,
@@ -99,7 +101,7 @@ func New(opts Options) (*Middleware, error) {
 	}
 	// Some providers (like OneLogin) do not work properly unless the User-Agent header is specified.
 	// Setting the user agent prevents the 403 Forbidden errors.
-	req.Header.Set("User-Agent", "Golang; github.com/crewjam/saml")
+	req.Header.Set("User-Agent", "Golang; github.com/braineet/saml")
 
 	for i := 0; true; i++ {
 		resp, err := c.Do(req)
