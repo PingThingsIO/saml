@@ -12,8 +12,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/braineet/saml"
-	"github.com/braineet/saml/logger"
+	"github.com/PingThingsIO/saml"
+	"github.com/PingThingsIO/saml/logger"
 )
 
 const defaultTokenMaxAge = time.Hour
@@ -101,7 +101,7 @@ func New(opts Options) (*Middleware, error) {
 	}
 	// Some providers (like OneLogin) do not work properly unless the User-Agent header is specified.
 	// Setting the user agent prevents the 403 Forbidden errors.
-	req.Header.Set("User-Agent", "Golang; github.com/braineet/saml")
+	req.Header.Set("User-Agent", "Golang; github.com/PingThingsIO/saml")
 
 	for i := 0; true; i++ {
 		resp, err := c.Do(req)

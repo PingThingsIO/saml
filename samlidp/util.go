@@ -8,7 +8,7 @@ import (
 
 	"io"
 
-	"github.com/braineet/saml"
+	"github.com/PingThingsIO/saml"
 )
 
 func randomBytes(n int) []byte {

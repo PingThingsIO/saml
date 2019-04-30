@@ -18,9 +18,9 @@ import (
 	"os"
 
 	"github.com/beevik/etree"
-	"github.com/braineet/saml/logger"
-	"github.com/braineet/saml/testsaml"
-	"github.com/braineet/saml/xmlenc"
+	"github.com/PingThingsIO/saml/logger"
+	"github.com/PingThingsIO/saml/testsaml"
+	"github.com/PingThingsIO/saml/xmlenc"
 	"github.com/dgrijalva/jwt-go"
 	. "gopkg.in/check.v1"
 )

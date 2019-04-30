@@ -15,8 +15,8 @@ import (
 
 	"crypto/rsa"
 
-	"github.com/braineet/saml"
-	"github.com/braineet/saml/logger"
+	"github.com/PingThingsIO/saml"
+	"github.com/PingThingsIO/saml/logger"
 	"github.com/dgrijalva/jwt-go"
 )
 

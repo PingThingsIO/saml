@@ -18,9 +18,9 @@ import (
 	dsig "github.com/russellhaering/goxmldsig"
 	. "gopkg.in/check.v1"
 
-	"github.com/braineet/saml"
-	"github.com/braineet/saml/logger"
-	"github.com/braineet/saml/testsaml"
+	"github.com/PingThingsIO/saml"
+	"github.com/PingThingsIO/saml/logger"
+	"github.com/PingThingsIO/saml/testsaml"
 )
 
 // Hook up gocheck into the "go test" runner.
