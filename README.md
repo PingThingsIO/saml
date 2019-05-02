@@ -1,10 +1,12 @@
 # SAML
-[![](https://godoc.org/github.com/crewjam/saml?status.svg)](http://godoc.org/github.com/crewjam/saml)
 
-[![Build Status](https://travis-ci.org/crewjam/saml.svg?branch=master)](https://travis-ci.org/crewjam/saml)
+[![Documentation](https://godoc.org/github.com/PingThingsIO/saml?status.svg)](http://godoc.org/github.com/PingThingsIO/saml)
+[![Build Status](https://travis-ci.org/PingThingsIO/saml.svg?branch=master)](https://travis-ci.org/PingThingsIO/saml)
 
 Package saml contains a partial implementation of the SAML standard in golang.
 SAML is a standard for identity federation, i.e. either allowing a third party to authenticate your users or allowing third parties to rely on us to authenticate their users.
+
+**NOTE:** This package was forked from [github.com/crewjam/saml](https://github.com/crewjam/saml) and has had PRs merged into it from that fork to fix bugs that were running in production. We suggest using the parent repository if at all possible and do not make any guarantees of the correctness of this package.
 
 ## Introduction
 
@@ -12,25 +14,25 @@ In SAML parlance an **Identity Provider** (IDP) is a service that knows how to a
 
 The core package contains the implementation of SAML. The package samlsp provides helper middleware suitable for use in Service Provider applications. The package samlidp provides a rudimentary IDP service that is useful for testing or as a starting point for other integrations.
 
-## Breaking Changes 
+## Breaking Changes
 
 Note: between version 0.2.0 and the current master include changes to the API
 that will break your existing code a little.
 
 This change turned some fields from pointers to a single optional struct into
 the more correct slice of struct, and to pluralize the field name. For example,
-`IDPSSODescriptor *IDPSSODescriptor` has become 
-`IDPSSODescriptors []IDPSSODescriptor`. This more accurately reflects the 
+`IDPSSODescriptor *IDPSSODescriptor` has become
+`IDPSSODescriptors []IDPSSODescriptor`. This more accurately reflects the
 standard.
 
-The struct `Metadata` has been renamed to `EntityDescriptor`. In 0.2.0 and before, 
-every struct derived from the standard has the same name as in the standard, 
-*except* for `Metadata` which should always have been called `EntityDescriptor`. 
+The struct `Metadata` has been renamed to `EntityDescriptor`. In 0.2.0 and before,
+every struct derived from the standard has the same name as in the standard,
+*except* for `Metadata` which should always have been called `EntityDescriptor`.
 
 In various places `url.URL` is now used where `string` was used <= version 0.1.0.
 
-In various places where keys and certificates were modeled as `string` 
-<= version 0.1.0 (what was I thinking?!) they are now modeled as 
+In various places where keys and certificates were modeled as `string`
+<= version 0.1.0 (what was I thinking?!) they are now modeled as
 `*rsa.PrivateKey`, `*x509.Certificate`, or `crypto.PrivateKey` as appropriate.
 
 ## Getting Started as a Service Provider
