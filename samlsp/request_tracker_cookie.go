@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -26,10 +27,17 @@ type CookieRequestTracker struct {
 // TrackRequest starts tracking the SAML request with the given ID. It returns an
 // `index` that should be used as the RelayState in the SAMl request flow.
 func (t CookieRequestTracker) TrackRequest(w http.ResponseWriter, r *http.Request, samlRequestID string) (string, error) {
+	forwardedURI := r.Header.Get("X-Forwarded-Uri")
+	forwardedHost := r.Header.Get("X-Forwarded-Host")
+	forwardedProto := r.Header.Get("X-Forwarded-Proto")
+	forwardedURL := forwardedProto + "://" + forwardedHost + forwardedURI
+	if _, err := url.Parse(forwardedURL); err != nil {
+		forwardedURL = r.URL.String()
+	}
 	trackedRequest := TrackedRequest{
 		Index:         base64.RawURLEncoding.EncodeToString(randomBytes(42)),
 		SAMLRequestID: samlRequestID,
-		URI:           r.URL.String(),
+		URI:           forwardedURL,
 	}
 
 	if t.RelayStateFunc != nil {
