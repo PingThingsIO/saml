@@ -19,6 +19,7 @@ type CookieRequestTracker struct {
 	ServiceProvider *saml.ServiceProvider
 	NamePrefix      string
 	Codec           TrackedRequestCodec
+	Domain          string
 	MaxAge          time.Duration
 	RelayStateFunc  func(w http.ResponseWriter, r *http.Request) string
 	SameSite        http.SameSite
@@ -60,6 +61,7 @@ func (t CookieRequestTracker) TrackRequest(w http.ResponseWriter, r *http.Reques
 		SameSite: t.SameSite,
 		Secure:   t.ServiceProvider.AcsURL.Scheme == "https",
 		Path:     t.ServiceProvider.AcsURL.Path,
+		Domain:   t.Domain,
 	})
 
 	return trackedRequest.Index, nil
@@ -73,7 +75,7 @@ func (t CookieRequestTracker) StopTrackingRequest(w http.ResponseWriter, r *http
 		return err
 	}
 	cookie.Value = ""
-	cookie.Domain = t.ServiceProvider.AcsURL.Hostname()
+	cookie.Domain = t.Domain
 	cookie.Expires = time.Unix(1, 0) // past time as close to epoch as possible, but not zero time.Time{}
 	cookie.Path = t.ServiceProvider.AcsURL.Path
 	http.SetCookie(w, cookie)
