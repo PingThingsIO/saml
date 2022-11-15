@@ -16,6 +16,7 @@ import (
 type Options struct {
 	EntityID              string
 	URL                   url.URL
+	CookieScope           string
 	Key                   *rsa.PrivateKey
 	Certificate           *x509.Certificate
 	Intermediates         []*x509.Certificate
@@ -53,8 +54,8 @@ func DefaultSessionProvider(opts Options) CookieSessionProvider {
 		cookieName = defaultSessionCookieName
 	}
 	return CookieSessionProvider{
-		Name:     cookieName,
-		Domain:   opts.URL.Host,
+		Name:     defaultSessionCookieName,
+		Domain:   opts.CookieScope,
 		MaxAge:   defaultSessionMaxAge,
 		HTTPOnly: true,
 		Secure:   opts.URL.Scheme == "https",
@@ -81,6 +82,7 @@ func DefaultRequestTracker(opts Options, serviceProvider *saml.ServiceProvider) 
 	return CookieRequestTracker{
 		ServiceProvider: serviceProvider,
 		NamePrefix:      "saml_",
+		Domain:          opts.CookieScope,
 		Codec:           DefaultTrackedRequestCodec(opts),
 		MaxAge:          saml.MaxIssueDelay,
 		RelayStateFunc:  opts.RelayStateFunc,
