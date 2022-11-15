@@ -15,14 +15,15 @@ var _ SessionProvider = CookieSessionProvider{}
 // CookieSessionProvider is an implementation of SessionProvider that stores
 // session tokens in an HTTP cookie.
 type CookieSessionProvider struct {
-	Name     string
-	Domain   string
-	HTTPOnly bool
-	Secure   bool
-	SameSite http.SameSite
-	MaxAge   time.Duration
-	Path     string
-	Codec    SessionCodec
+	Name        string
+	Domain      string
+	CookieScope string
+	HTTPOnly    bool
+	Secure      bool
+	SameSite    http.SameSite
+	MaxAge      time.Duration
+	Path        string
+	Codec       SessionCodec
 }
 
 // CreateSession is called when we have received a valid SAML assertion and
@@ -51,7 +52,7 @@ func (c CookieSessionProvider) CreateSession(w http.ResponseWriter, r *http.Requ
 
 	http.SetCookie(w, &http.Cookie{
 		Name:     c.Name,
-		Domain:   c.Domain,
+		Domain:   c.CookieScope,
 		Value:    value,
 		MaxAge:   int(c.MaxAge.Seconds()),
 		HttpOnly: c.HTTPOnly,
