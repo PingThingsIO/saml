@@ -72,6 +72,7 @@ func NewMiddlewareTest(t *testing.T) *MiddlewareTest {
 
 	opts := Options{
 		URL:         mustParseURL("https://15661444.ngrok.io/"),
+		CookieScope: "15661444.ngrok.io",
 		Key:         test.Key,
 		Certificate: test.Certificate,
 		IDPMetadata: &metadata,
@@ -160,7 +161,7 @@ func TestMiddlewareRequireAccountNoCreds(t *testing.T) {
 
 	assert.Check(t, is.Equal(http.StatusFound, resp.Code))
 	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+
-		test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Max-Age=90; HttpOnly",
+		test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Domain=15661444.ngrok.io; Max-Age=90; HttpOnly",
 		resp.Header().Get("Set-Cookie")))
 
 	redirectURL, err := url.Parse(resp.Header().Get("Location"))
@@ -183,7 +184,7 @@ func TestMiddlewareRequireAccountNoCredsSecure(t *testing.T) {
 	handler.ServeHTTP(resp, req)
 
 	assert.Check(t, is.Equal(http.StatusFound, resp.Code))
-	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Max-Age=90; HttpOnly; Secure",
+	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Domain=15661444.ngrok.io; Max-Age=90; HttpOnly; Secure",
 		resp.Header().Get("Set-Cookie")))
 
 	redirectURL, err := url.Parse(resp.Header().Get("Location"))
@@ -209,7 +210,7 @@ func TestMiddlewareRequireAccountNoCredsPostBinding(t *testing.T) {
 	handler.ServeHTTP(resp, req)
 
 	assert.Check(t, is.Equal(http.StatusOK, resp.Code))
-	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Max-Age=90; HttpOnly; Secure",
+	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Domain=15661444.ngrok.io; Max-Age=90; HttpOnly; Secure",
 		resp.Header().Get("Set-Cookie")))
 
 	golden.Assert(t, resp.Body.String(), "expected_post_binding_response.html")
@@ -269,7 +270,7 @@ func TestMiddlewareRequireAccountBadCreds(t *testing.T) {
 
 	assert.Check(t, is.Equal(http.StatusFound, resp.Code))
 
-	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Max-Age=90; HttpOnly; Secure",
+	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Domain=15661444.ngrok.io; Max-Age=90; HttpOnly; Secure",
 		resp.Header().Get("Set-Cookie")))
 
 	redirectURL, err := url.Parse(resp.Header().Get("Location"))
@@ -299,7 +300,7 @@ func TestMiddlewareRequireAccountExpiredCreds(t *testing.T) {
 	handler.ServeHTTP(resp, req)
 
 	assert.Check(t, is.Equal(http.StatusFound, resp.Code))
-	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Max-Age=90; HttpOnly; Secure",
+	assert.Check(t, is.Equal("saml_KCosLjAyNDY4Ojw-QEJERkhKTE5QUlRWWFpcXmBiZGZoamxucHJ0dnh6="+test.makeTrackedRequest("id-00020406080a0c0e10121416181a1c1e20222426")+"; Path=/saml2/acs; Domain=15661444.ngrok.io; Max-Age=90; HttpOnly; Secure",
 		resp.Header().Get("Set-Cookie")))
 
 	redirectURL, err := url.Parse(resp.Header().Get("Location"))
@@ -420,8 +421,9 @@ func TestMiddlewareDefaultCookieDomainIPv4(t *testing.T) {
 	ipv4Loopback := net.IP{127, 0, 0, 1}
 
 	sp := DefaultSessionProvider(Options{
-		URL: mustParseURL("https://" + net.JoinHostPort(ipv4Loopback.String(), "54321")),
-		Key: test.Key,
+		URL:         mustParseURL("https://" + net.JoinHostPort(ipv4Loopback.String(), "54321")),
+		CookieScope: net.JoinHostPort(ipv4Loopback.String(), "54321"),
+		Key:         test.Key,
 	})
 
 	req, _ := http.NewRequest("GET", "/", nil)
