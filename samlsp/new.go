@@ -70,13 +70,14 @@ func DefaultSessionProvider(opts Options) CookieSessionProvider {
 		cookieName = defaultSessionCookieName
 	}
 	return CookieSessionProvider{
-		Name:     defaultSessionCookieName,
-		Domain:   opts.CookieScope,
-		MaxAge:   defaultSessionMaxAge,
-		HTTPOnly: true,
-		Secure:   opts.URL.Scheme == "https",
-		SameSite: opts.CookieSameSite,
-		Codec:    DefaultSessionCodec(opts),
+		Name:        defaultSessionCookieName,
+		Domain:      opts.URL.Host,
+		CookieScope: opts.CookieScope,
+		MaxAge:      defaultSessionMaxAge,
+		HTTPOnly:    true,
+		Secure:      opts.URL.Scheme == "https",
+		SameSite:    opts.CookieSameSite,
+		Codec:       DefaultSessionCodec(opts),
 	}
 }
 
