@@ -23,6 +23,7 @@ type CookieSessionProvider struct {
 	SameSite    http.SameSite
 	MaxAge      time.Duration
 	Codec       SessionCodec
+	LoginFunc   func(a *saml.Assertion)
 }
 
 // CreateSession is called when we have received a valid SAML assertion and
@@ -32,6 +33,11 @@ func (c CookieSessionProvider) CreateSession(w http.ResponseWriter, r *http.Requ
 	// Cookies should not have the port attached to them so strip it off
 	if domain, _, err := net.SplitHostPort(c.Domain); err == nil {
 		c.Domain = domain
+	}
+
+	if c.LoginFunc != nil {
+		//Callback may modify assertion
+		c.LoginFunc(assertion)
 	}
 
 	session, err := c.Codec.New(assertion)

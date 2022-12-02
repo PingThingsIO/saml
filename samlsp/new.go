@@ -31,6 +31,7 @@ type Options struct {
 	CookieSameSite        http.SameSite
 	CookieName            string
 	RelayStateFunc        func(w http.ResponseWriter, r *http.Request) string
+	LoginFunc             func(a *saml.Assertion)
 	LogoutBindings        []string
 }
 
@@ -62,6 +63,7 @@ func DefaultSessionProvider(opts Options) CookieSessionProvider {
 		Secure:      opts.URL.Scheme == "https",
 		SameSite:    opts.CookieSameSite,
 		Codec:       DefaultSessionCodec(opts),
+		LoginFunc:   opts.LoginFunc,
 	}
 }
 
