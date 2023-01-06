@@ -17,6 +17,7 @@ type Options struct {
 	EntityID              string
 	URL                   url.URL
 	CookieScope           string
+	HttpOnly              bool
 	Key                   *rsa.PrivateKey
 	Certificate           *x509.Certificate
 	Intermediates         []*x509.Certificate
@@ -59,7 +60,7 @@ func DefaultSessionProvider(opts Options) CookieSessionProvider {
 		Domain:      opts.URL.Host,
 		CookieScope: opts.CookieScope,
 		MaxAge:      defaultSessionMaxAge,
-		HTTPOnly:    true,
+		HTTPOnly:    opts.HttpOnly,
 		Secure:      opts.URL.Scheme == "https",
 		SameSite:    opts.CookieSameSite,
 		Codec:       DefaultSessionCodec(opts),
