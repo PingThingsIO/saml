@@ -115,6 +115,7 @@ func (m *Middleware) ServeACS(w http.ResponseWriter, r *http.Request) {
 // to start the SAML auth flow.
 func (m *Middleware) RequireAccount(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("Request path:%v\n", r.URL.Path)
 		cookies := r.Cookies()
 		for _, cookie := range cookies {
 			log.Printf("Cookie Name: %s\n", cookie.Name)
