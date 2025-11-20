@@ -1,6 +1,7 @@
 module github.com/crewjam/saml
 
-go 1.22
+go 1.24.0
+
 toolchain go1.24.1
 
 require (
@@ -9,7 +10,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/mattermost/xml-roundtrip-validator v0.1.0
 	github.com/russellhaering/goxmldsig v1.4.0
-	golang.org/x/crypto v0.35.0
+	golang.org/x/crypto v0.45.0
 	gotest.tools v2.2.0+incompatible
 )
 
